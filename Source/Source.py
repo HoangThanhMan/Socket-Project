@@ -13,6 +13,7 @@ from tkinter import Menu, ttk
 import re
 import xml.etree.ElementTree as ET
 import tkinter.messagebox
+import tkinter.simpledialog
 import xml.dom.minidom
 import email
 
