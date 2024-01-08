@@ -398,7 +398,6 @@ class MailClientGUI(tk.Tk):
         s.title("Mail Client")
         s.geometry("590x400")
         # Khởi tạo MailClient
-        s.mail_client = MailClient()
         s.stop_event = Event()
         
         # Tạo menu chính
@@ -489,7 +488,7 @@ class MailClientGUI(tk.Tk):
             else:
                 mail_client.SaveData(file_path)
             # Bắt đầu luồng
-            self.autoload_thread = Thread(target=self.mail_client.AutoloadMails, args=(self.stop_event,))
+            self.autoload_thread = Thread(target=mail_client.AutoloadMails, args=(self.stop_event,))
             self.autoload_thread.start()
             # Đóng cửa sổ pop-up
             config_dialog.destroy()
@@ -501,7 +500,8 @@ class MailClientGUI(tk.Tk):
 
     def Logout(self):
         self.menu.destroy()  
-        self.menu_button.destroy()  
+        self.menu_button.destroy()
+        mail_client.SaveData(mail_client.FilePath)  
         self.title("Mail Client") 
         self.geometry("590x400") 
         self.destroy()
