@@ -488,8 +488,7 @@ class MailClientGUI(tk.Tk):
             else:
                 mail_client.SaveData(file_path)
             # Bắt đầu luồng
-            self.autoload_thread = Thread(target=mail_client.AutoloadMails, args=(self.stop_event,))
-            self.autoload_thread.start()
+            self.start_autoload_thread()
             # Đóng cửa sổ pop-up
             config_dialog.destroy()
             tkinter.messagebox.showinfo("Login Successful", f"Welcome <{username}>!")
@@ -505,11 +504,7 @@ class MailClientGUI(tk.Tk):
         self.title("Mail Client") 
         self.geometry("590x400") 
         self.destroy()
-        if self.autoload_thread:
-            # Đặt biến cờ để yêu cầu luồng dừng
-            self.stop_event.set()
-            # Đợi cho luồng dừng
-            self.autoload_thread.join()
+        self.__del__()
         self.__init__() 
 
     def Send_email(s):
@@ -680,6 +675,25 @@ class MailClientGUI(tk.Tk):
         # Tạo Button để kích hoạt hàm ViewMails
         view_emails_button = tk.Button(mailbox_window, text="View", command=View_email)
         view_emails_button.pack()
+
+    def start_autoload_thread(self):
+        
+        def autoload_mails():
+            while not self.stop_event.is_set():
+                mail_client.LoadMail()
+                self.stop_event.wait(mail_client.autoload_interval)
+
+        self.stop_event = Event()
+
+        self.autoload_thread = Thread(target=autoload_mails)
+        self.autoload_thread.start()
+
+    def stop_autoload_thread(self):
+        self.stop_event.set()
+        self.autoload_thread.join()
+
+    def __del__(self):
+        self.stop_autoload_thread()
 
 if __name__ == "__main__":
     mail_client = MailClient()
