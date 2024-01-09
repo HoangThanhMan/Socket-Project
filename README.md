@@ -16,7 +16,7 @@ Mail Client GUI là một ứng dụng trình quản lý email với giao diện
 
 ## Cài Đặt
 1. Clone repository này về máy của bạn.
-2. Chạy ứng dụng bằng lệnh `python mail_client_gui.py` trong thư mục chứa mã nguồn.
+2. Chạy ứng dụng bằng lệnh `python Source.py` trong thư mục chứa mã nguồn.
 
 ## Hướng Dẫn Sử Dụng
 1. Mở ứng dụng và đăng nhập bằng tài khoản email của bạn.
